@@ -1,0 +1,23 @@
+{
+	"width": 480,
+	"height": 480,
+	"fps": 30,
+	"main": "./script/main.js",
+	"assets": {
+		"aco": {
+			"type": "image",
+			"width": 128,
+			"height": 288,
+			"path": "image/aco.png"
+		},
+		"main": {
+			"type": "script",
+			"path": "script/main.js",
+			"global": true
+		}
+	},
+	"moduleMainScripts": {},
+	"environment": {
+		"sandbox-runtime": "3"
+	}
+}
