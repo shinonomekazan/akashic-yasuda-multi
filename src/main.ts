@@ -60,7 +60,7 @@ function main(param: g.GameMainParameterObject): void {
 
 		sprite.start();
 		scene.append(sprite);
-		scene.append(label);
+		
 		
 		var pane = new g.Pane({ scene: scene, width: 200, height: 200 });
 		var rect = new g.FilledRect({
@@ -75,7 +75,7 @@ function main(param: g.GameMainParameterObject): void {
 
 		pane.append(rect);
 		scene.append(pane);
-		
+		scene.append(label);
 		
 
 		scene.onUpdate.add(function () {
