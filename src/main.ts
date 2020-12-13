@@ -3,7 +3,7 @@ function main(param: g.GameMainParameterObject): void {
 	var scene = new g.Scene
 		({
 			game: g.game,
-			assetIds: ["sprite"],
+			assetIds: ["aco", "aco2"],　
 		});
 	// シーンが読み込まれた時の処理をここに書く
 		scene.onLoad.addOnce(function ()
@@ -24,7 +24,9 @@ function main(param: g.GameMainParameterObject): void {
 			src: scene.asset.getImageById("aco2"),
 			width: 32,
 			height: 48,
-			frames: [5, 6, 7, 6],
+			x: 160,
+			y: 100,
+			frames: [5, 6, 4, 6],
 			interval: 300
 		});
 		var font = new g.DynamicFont({
@@ -63,24 +65,12 @@ function main(param: g.GameMainParameterObject): void {
 			}
 		});
 
-		//FrameSprite.start();
+		aco.start();
+		aco2.start();
 		scene.append(aco);
 		scene.append(aco2);
 		
-		
-		var pane = new g.Pane({ scene: scene, width: 200, height: 200 });
-		var rect = new g.FilledRect({
-			scene: scene,
-			width: 30,
-			height: 30,
-			x: 160,
-			y: 100,
-			cssColor: "red"
-
-		});
-
-		pane.append(rect);
-		scene.append(pane);
+		//scene.append(pane);
 		scene.append(label);
 		
 
@@ -99,11 +89,11 @@ function main(param: g.GameMainParameterObject): void {
 			}
 
 			var yspritebox = aco.y + aco.height
-			var yrectbox = rect.y + rect.height
+			var yrectbox = aco2.y + aco2.height
 			var xspritebox = aco.x + aco.width
-			var xrectbox = rect.x + rect.width
+			var xrectbox = aco2.x + aco2.width
 
-			if (yspritebox >= rect.y && yrectbox >= aco.y && xspritebox >= rect.x && xrectbox >= aco.x)
+			if (yspritebox >= aco2.y && yrectbox >= aco.y && xspritebox >= aco2.x && xrectbox >= aco.x)
 			{
 				console.log("当たり");
 				label.opacity = 1;
