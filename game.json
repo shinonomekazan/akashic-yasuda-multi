@@ -10,6 +10,12 @@
 			"height": 288,
 			"path": "image/aco.png"
 		},
+		"aco2": {
+			"type": "image",
+			"width": 128,
+			"height": 288,
+			"path": "image/aco2.png"
+		},
 		"main": {
 			"type": "script",
 			"path": "script/main.js",

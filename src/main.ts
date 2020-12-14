@@ -3,20 +3,30 @@ function main(param: g.GameMainParameterObject): void {
 	var scene = new g.Scene
 		({
 			game: g.game,
-			assetIds: ["aco"],
+			assetIds: ["aco", "aco2"],　
 		});
 	// シーンが読み込まれた時の処理をここに書く
 		scene.onLoad.addOnce(function ()
 	{
 		// acoちゃんを作る
 
-		var sprite = new g.FrameSprite
+		var aco = new g.FrameSprite
 		({
 			scene: scene,
 			src: scene.asset.getImageById("aco"),
 			width: 32,
 			height: 48,
 			frames: [5, 6, 7, 6],
+			interval: 300
+		});
+		var aco2 = new g.FrameSprite({
+			scene: scene,
+			src: scene.asset.getImageById("aco2"),
+			width: 32,
+			height: 48,
+			x: 160,
+			y: 100,
+			frames: [5, 6, 4, 6],
 			interval: 300
 		});
 		var font = new g.DynamicFont({
@@ -36,45 +46,31 @@ function main(param: g.GameMainParameterObject): void {
 
 		var gameover = false
 
-		sprite.x += 0;
-		sprite.y += 100;
-		sprite.modified();
+		aco.x += 0;
+		aco.y += 100;
+		aco.modified();
 
 		//クリックした位置に移動
 		scene.onPointDownCapture.add(function (ev) {
 			if (gameover) {
-				sprite.x = 0;
-				sprite.y = 0;
+				aco.x = 0;
+				aco.y = 0;
 				gameover = false
 
 			}
 			else
 			{
 				// タッチされたときの処理
-				sprite.y = ev.point.y;
+				aco.y = ev.point.y;
 			}
 		});
-			
-		
-		
 
-		sprite.start();
-		scene.append(sprite);
+		aco.start();
+		aco2.start();
+		scene.append(aco);
+		scene.append(aco2);
 		
-		
-		var pane = new g.Pane({ scene: scene, width: 200, height: 200 });
-		var rect = new g.FilledRect({
-			scene: scene,
-			width: 30,
-			height: 30,
-			x: 160,
-			y: 100,
-			cssColor: "red"
-
-		});
-
-		pane.append(rect);
-		scene.append(pane);
+		//scene.append(pane);
 		scene.append(label);
 		
 
@@ -82,22 +78,22 @@ function main(param: g.GameMainParameterObject): void {
 
 			if (gameover)
 			{
-				sprite.modified();
+				aco.modified();
 				
 			}
 			else
 			{
-				++sprite.x;
-				sprite.modified();
+				++aco.x;
+				aco.modified();
 				label.opacity = 0;
 			}
 
-			var yspritebox = sprite.y + sprite.height
-			var yrectbox = rect.y + rect.height
-			var xspritebox = sprite.x + sprite.width
-			var xrectbox = rect.x + rect.width
+			var yspritebox = aco.y + aco.height
+			var yrectbox = aco2.y + aco2.height
+			var xspritebox = aco.x + aco.width
+			var xrectbox = aco2.x + aco2.width
 
-			if (yspritebox >= rect.y && yrectbox >= sprite.y && xspritebox >= rect.x && xrectbox >= sprite.x)
+			if (yspritebox >= aco2.y && yrectbox >= aco.y && xspritebox >= aco2.x && xrectbox >= aco.x)
 			{
 				console.log("当たり");
 				label.opacity = 1;
@@ -108,9 +104,9 @@ function main(param: g.GameMainParameterObject): void {
 				console.log("Win");
 			}
 
-			while (sprite.x >= 811) {
+			while (aco.x >= 811) {
 				console.log("出た");
-				sprite.x = 0;
+				aco.x = 0;
 
 			}
 			
