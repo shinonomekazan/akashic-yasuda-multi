@@ -43,6 +43,14 @@ function main(param: g.GameMainParameterObject): void {
 			x: 100,
 			y: 100
 		});
+		var botton = new g.FilledRect({
+			scene: scene,
+			cssColor: "yellow",
+			x: 10,
+			y: 400,
+			width: 80,
+			height: 50
+		});
 
 		var gameover = false
 
@@ -70,7 +78,7 @@ function main(param: g.GameMainParameterObject): void {
 		scene.append(aco);
 		scene.append(aco2);
 		
-		//scene.append(pane);
+		scene.append(botton);
 		scene.append(label);
 		
 
