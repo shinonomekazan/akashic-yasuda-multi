@@ -43,7 +43,7 @@ function main(param: g.GameMainParameterObject): void {
 			x: 100,
 			y: 100
 		});
-		var botton = new g.FilledRect({
+		var button = new g.FilledRect({
 			scene: scene,
 			cssColor: "yellow",
 			x: 10,
@@ -59,35 +59,49 @@ function main(param: g.GameMainParameterObject): void {
 		aco.modified();
 
 		//クリックした位置に移動
-		scene.onPointDownCapture.add(function (ev) {
-			if (gameover) {
-				aco.x = 0;
-				aco.y = 0;
-				gameover = false
+		// scene.onPointDownCapture.add(function (ev) {
+		// 	if (gameover) {
+		// 		aco.x = 0;
+		// 		aco.y = 0;
+		// 		gameover = false
 
-			}
-			else
-			{
-				// タッチされたときの処理
-				aco.y = ev.point.y;
-			}
-		});
+		// 	}
+		// 	else
+		// 	{
+		// 		// タッチされたときの処理
+		// 		aco.y = ev.point.y;
+		// 	}
+		// });
 
 		aco.start();
 		aco2.start();
 		scene.append(aco);
 		scene.append(aco2);
 		
-		scene.append(botton);
+		scene.append(button);
 		scene.append(label);
 		
+		scene.onPointDownCapture.add(function(ev) {
+			var size = 8;
+			var shot = new g.FilledRect({
+			  scene: scene,
+			  x: ev.point.x - size / 2,
+			  y: ev.point.y - size / 2,
+			  width: size,
+			  height: size - 6,
+			  cssColor: "#000000"
+			});
+			++shot.x;
+			shot.modified();
+			scene.append(shot);
+		});
 
+		
 		scene.onUpdate.add(function () {
 
 			if (gameover)
 			{
 				aco.modified();
-				
 			}
 			else
 			{
@@ -117,11 +131,7 @@ function main(param: g.GameMainParameterObject): void {
 				aco.x = 0;
 
 			}
-			
 		});
-		
-	
-
 	})
 
 	
