@@ -50,7 +50,11 @@
 				height: 50,
 				x: 10,
 				y: 400,
+				frames: [1, 0],
+				// タッチイベント
+				touchable: true
 			});
+			
 
 			var gameover = false
 			var click = false
@@ -82,34 +86,35 @@
 			scene.append(button);
 			scene.append(label);
 
-			var ybuttonbox = button.y + button.height
-			var xbuttonbox = button.x + button.width
-			
-			scene.onPointDownCapture.add(function(ev) {
+			button.onPointDown.add(function () {
 				var size = 8;
 				var shot = new g.FilledRect({
-				scene: scene,
-				x: ev.point.x - size / 2,
-				y: ev.point.y - size / 2,
-				width: size,
-				height: size - 6,
-				cssColor: "#000000"
+					scene: scene,
+					x: aco.x - size / 2,
+					y: aco.y - size / 2,
+					width: size,
+					height: size - 6,
+					cssColor: "#000000"
 				});
-				scene.onPointDownCapture.add(function (ev) {
-					if (click) {
-						button.x = 0;
-						button.y = 0;
-						click = false
-	
-					}
-					else
-					{
-						
-					}
+
+				button.frameNumber++;
+				button.frameNumber %= 2;
+				button.modified();
+
+				// if (click) {
+				// 	button.x = 0;
+				// 	button.y = 0;
+				// 	click = false
+
+				// }
+				// else
+				// {
+					
+				// }
 				++shot.x;
 				shot.modified();
 				scene.append(shot);
-			
+				
 
 			
 				scene.onUpdate.add(function () {
@@ -150,7 +155,7 @@
 					shot.modified();
 				});
 			});
-		})
+		});
 
 		
 		g.game.pushScene(scene);
