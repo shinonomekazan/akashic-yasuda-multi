@@ -23,8 +23,8 @@
 		},
 		"button": {
 			"type": "image",
-			"width": 282,
-			"height": 82,
+			"width": 276,
+			"height": 60,
 			"path": "image/button.png"
 		}
 	},
