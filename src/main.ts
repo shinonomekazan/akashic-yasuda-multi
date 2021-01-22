@@ -25,7 +25,7 @@
 				width: 32,
 				height: 48,
 				x: 400,
-				y: 100,
+				y: 30,
 				frames: [5, 6, 4, 6],
 				interval: 300
 			});
@@ -97,26 +97,14 @@
 					cssColor: "#000000"
 				});
 
-				button.frameNumber++;
-				button.frameNumber %= 2;
+				//button.frameNumber++;
+				button.frameNumber　== 1;
 				button.modified();
 
-				// if (click) {
-				// 	button.x = 0;
-				// 	button.y = 0;
-				// 	click = false
-
-				// }
-				// else
-				// {
-					
-				// }
 				++shot.x;
 				shot.modified();
 				scene.append(shot);
 				
-
-			
 				scene.onUpdate.add(function () {
 
 					if (gameover)
@@ -128,6 +116,7 @@
 						++shot.x;
 						shot.modified();
 						label.opacity = 0;
+						aco2.opacity = 1;
 					}
 
 					var yspritebox = shot.y + shot.height
@@ -139,6 +128,7 @@
 					{
 						console.log("当たり");
 						label.opacity = 1;
+						aco2.opacity = 0;
 						gameover = true
 					}
 					else
