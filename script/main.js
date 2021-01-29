@@ -109,20 +109,20 @@ function main(param) {
             {
                 shotplace　= aco;
                 shotdirection = 10;
-                var yrectbox = aco2.y + aco2.height;
-                var xrectbox = aco2.x + aco2.width;
+                yrectbox = aco2.y + aco2.height;
+                xrectbox = aco2.x + aco2.width;
                 acoy = aco2.y;
                 acox = aco2.x;
                 acodestroy = aco2;
             }
 
             //PlayerIDが2の場合
-            if(playerId == 2)
+            else if(playerId == 2)
             {
                 shotplace　= aco2;
                 shotdirection = -10;
-                var yrectbox = aco.y + aco.height;
-                var xrectbox = aco.x + aco.width;
+                yrectbox = aco.y + aco.height;
+                xrectbox = aco.x + aco.width;
                 acoy = aco.y;
                 acox = aco.x;
                 acodestroy = aco;
@@ -144,14 +144,13 @@ function main(param) {
             shot1.modified();
             scene.append(shot1);
             scene.onUpdate.add(function () {
-                if (gameover) {
-                    shot1.modified();
+                if (! gameover) {
+                   
                 }
                 else {
                     // ++shot1.x;
                     shot1.modified();
                     label.opacity = 0;
-                    aco2.opacity = 1;
                 }
                 //acoちゃんにshotが当たると消える
                 var yspritebox = shot1.y + shot1.height;
@@ -162,10 +161,8 @@ function main(param) {
                     acodestroy.opacity = 0;
                     gameover = true;
                 }
-                else {
-                    
-                }
-                while (aco.x >= 811) {
+                
+                if (aco.x >= 811) {
                     aco.x = 0;
                 }
                 shot1.x += shotdirection;
