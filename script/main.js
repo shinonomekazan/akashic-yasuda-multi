@@ -51,7 +51,6 @@ function main(param) {
             touchable: true
         });
         var gameover = false;
-        var click = false;
         var playerId;
        
         //クリックした位置に移動
@@ -96,43 +95,43 @@ function main(param) {
         label.opacity = 0;
 
         button.onPointDown.add(function () {
-            var shotdirection;//球の向き
-            var shotplace;//球の出る場所
+            var shotDirection;//球の向き
+            var shotPlace;//球の出る場所
             var yrectbox;//acoちゃんのyサイズ、どこに当たるか
             var xrectbox;//acoちゃんのxサイズ、どこに当たるか
             var acoy;//acoちゃんのyサイズ、どこに当たるか
             var acox;//acoちゃんのxサイズ、どこに当たるか
-            var acodestroy;//球が当たって消えるacoちゃん
+            var acoDestroy;//球が当たって消えるacoちゃん
 
             //PlayerIDが１の場合
             if(playerId == 1)
             {
-                shotplace　= aco;
-                shotdirection = 10;
+                shotPlace　= aco;
+                shotDirection = 10;
                 yrectbox = aco2.y + aco2.height;
                 xrectbox = aco2.x + aco2.width;
                 acoy = aco2.y;
                 acox = aco2.x;
-                acodestroy = aco2;
+                acoDestroy = aco2;
             }
 
             //PlayerIDが2の場合
             else if(playerId == 2)
             {
-                shotplace　= aco2;
-                shotdirection = -10;
+                shotPlace　= aco2;
+                shotDirection = -10;
                 yrectbox = aco.y + aco.height;
                 xrectbox = aco.x + aco.width;
                 acoy = aco.y;
                 acox = aco.x;
-                acodestroy = aco;
+                acoDestroy = aco;
             }
 
             var size = 8;
             var shot1 = new g.FilledRect({
                 scene: scene,
-                x: shotplace.x - size / 2,
-                y: shotplace.y + 55 / 2,
+                x: shotPlace.x - size / 2,
+                y: shotPlace.y + 55 / 2,
                 width: size,
                 height: size - 6,
                 cssColor: "#000000"
@@ -140,32 +139,26 @@ function main(param) {
            
             button.frameNumber = 2;
             button.modified();
-            // shot1.x += shotdirection;
             shot1.modified();
             scene.append(shot1);
             scene.onUpdate.add(function () {
-                if (! gameover) {
-                   
-                }
-                else {
-                    // ++shot1.x;
-                    shot1.modified();
-                    label.opacity = 0;
-                }
+                
+                shot1.modified();
+                label.opacity = 0;
                 //acoちゃんにshotが当たると消える
                 var yspritebox = shot1.y + shot1.height;
                 var xspritebox = shot1.x + shot1.width;
                 if (yspritebox >= acoy && yrectbox >= shot1.y && xspritebox >= acox && xrectbox >= shot1.x) 
                 {
                     label.opacity = 1;
-                    acodestroy.opacity = 0;
+                    acoDestroy.opacity = 0;
                     gameover = true;
                 }
                 
                 if (aco.x >= 811) {
                     aco.x = 0;
                 }
-                shot1.x += shotdirection;
+                shot1.x += shotDirection;
                 shot1.modified();
             });
         });
