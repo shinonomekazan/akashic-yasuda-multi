@@ -52,40 +52,31 @@ function main(param) {
         });
         var gameover = false;
         var playerId;
-       
         //クリックした位置に移動
         scene.onPointDownCapture.add(function (ev) {
             playerId = ev.player.id;
-            var targetaco;//Playerによって、動くacoちゃんが変わる為の変数
+            var targetaco; //Playerによって、動くacoちゃんが変わる為の変数
             console.log(playerId);
-
-            if(playerId == 1)
-            {
+            if (playerId == 1) {
                 targetaco = aco;
             }
-
-            if(playerId == 2)
-            {
+            if (playerId == 2) {
                 targetaco = aco2;
             }
-
             if (gameover) {
                 targetaco.x = 0;
                 targetaco.y = 0;
                 gameover = false;
             }
-            else 
-            {
-                if(ev.target == button)
-                {
-                    return
+            else {
+                if (ev.target == button) {
+                    return;
                     //aco.y = ev.point.y;が実行されなくなる
                 }
                 // タッチされたときの処理
                 targetaco.y = ev.point.y;
             }
         });
-
         aco.start();
         aco2.start();
         scene.append(aco);
@@ -93,20 +84,17 @@ function main(param) {
         scene.append(button);
         scene.append(label);
         label.opacity = 0;
-
         button.onPointDown.add(function () {
-            var shotDirection;//球の向き
-            var shotPlace;//球の出る場所
-            var yrectbox;//acoちゃんのyサイズ、どこに当たるか
-            var xrectbox;//acoちゃんのxサイズ、どこに当たるか
-            var acoy;//acoちゃんのyサイズ、どこに当たるか
-            var acox;//acoちゃんのxサイズ、どこに当たるか
-            var acoDestroy;//球が当たって消えるacoちゃん
-
+            var shotDirection; //球の向き
+            var shotPlace; //球の出る場所
+            var yrectbox; //acoちゃんのyサイズ、どこに当たるか
+            var xrectbox; //acoちゃんのxサイズ、どこに当たるか
+            var acoy; //acoちゃんのyサイズ、どこに当たるか
+            var acox; //acoちゃんのxサイズ、どこに当たるか
+            var acoDestroy; //球が当たって消えるacoちゃん
             //PlayerIDが１の場合
-            if(playerId == 1)
-            {
-                shotPlace　= aco;
+            if (playerId == 1) {
+                shotPlace = aco;
                 shotDirection = 10;
                 yrectbox = aco2.y + aco2.height;
                 xrectbox = aco2.x + aco2.width;
@@ -114,11 +102,9 @@ function main(param) {
                 acox = aco2.x;
                 acoDestroy = aco2;
             }
-
             //PlayerIDが2の場合
-            else if(playerId == 2)
-            {
-                shotPlace　= aco2;
+            else if (playerId == 2) {
+                shotPlace = aco2;
                 shotDirection = -10;
                 yrectbox = aco.y + aco.height;
                 xrectbox = aco.x + aco.width;
@@ -126,7 +112,6 @@ function main(param) {
                 acox = aco.x;
                 acoDestroy = aco;
             }
-
             var size = 8;
             var shot1 = new g.FilledRect({
                 scene: scene,
@@ -136,25 +121,21 @@ function main(param) {
                 height: size - 6,
                 cssColor: "#000000"
             });
-           
             button.frameNumber = 2;
             button.modified();
             shot1.modified();
             scene.append(shot1);
             scene.onUpdate.add(function () {
-                
                 shot1.modified();
                 label.opacity = 0;
                 //acoちゃんにshotが当たると消える
                 var yspritebox = shot1.y + shot1.height;
                 var xspritebox = shot1.x + shot1.width;
-                if (yspritebox >= acoy && yrectbox >= shot1.y && xspritebox >= acox && xrectbox >= shot1.x) 
-                {
+                if (yspritebox >= acoy && yrectbox >= shot1.y && xspritebox >= acox && xrectbox >= shot1.x) {
                     label.opacity = 1;
                     acoDestroy.opacity = 0;
                     gameover = true;
                 }
-                
                 if (aco.x >= 811) {
                     aco.x = 0;
                 }

@@ -1,4 +1,4 @@
-function main(param) {
+	function main(param: g.GameMainParameterObject): void {
     // ここにゲームコードを記述します
     var scene = new g.Scene({
         game: g.game,
@@ -169,4 +169,5 @@ function main(param) {
     });
     g.game.pushScene(scene);
 }
-module.exports = main;
+export = main;
+
