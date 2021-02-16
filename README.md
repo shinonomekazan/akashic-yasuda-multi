@@ -14,18 +14,6 @@
 npm install
 ```
 
-### ビルド方法
-
-`typescript-game-sample` はTypeScriptで書かれているため、以下のコマンドでJavaScriptファイルに変換する必要があります。
-
-```sh
-npm run build
-```
-
-`src` ディレクトリ以下のTypeScriptファイルがコンパイルされ、`script` ディレクトリ以下にJavaScriptファイルが生成されます。
-
-`npm run build` は自動的に `akashic scan asset script` を実行するので、`game.json` の更新が行われます。
-
 ### 動作確認方法
 
 以下のどちらかを実行後、ブラウザで `http://localhost:3000/game/` にアクセスすることでゲームを実行できます。
