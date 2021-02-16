@@ -1,6 +1,6 @@
-# yasuda-multi
+# akashic-yasuda-multi
 
-**yasuda-multi**はakashicをマルチプレイに対応させたものです。
+**akashic-yasuda-multi**はakashicをマルチプレイに対応させたものです。
 左右でacoちゃんを撃ち合うことができます。
 
 ## 利用方法
