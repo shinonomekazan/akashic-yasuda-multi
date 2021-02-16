@@ -16,7 +16,7 @@
     "test": "jest"
   },
   "author": "",
-  "license": "",
+  "license": "MIT",
   "devDependencies": {
     "@akashic/akashic-cli": "^2.5.0",
     "@akashic/akashic-engine": "~3.0.0",
