@@ -5,10 +5,10 @@
 
 ## 利用方法
 
- `typescript-game-sample` を利用するにはNode.jsが必要です。
+ `akashic-yasuda-multi` を利用するにはNode.jsが必要です。
 
 初回のみ、以下のコマンドを実行して、ビルドに必要なパッケージをインストールしてください。
-この作業は `typescript-game-sample` を新しく生成するごとに必要です。
+この作業は `akashic-yasuda-multi` を新しく生成するごとに必要です。
 
 ```sh
 npm install
