@@ -1,4 +1,21 @@
-	function main(param: g.GameMainParameterObject): void {
+function arrayFindIndex<T>(o: T[], predicate: (element: T, index?: number) => boolean, thisArg?: any) {
+	// 5. Let k be 0.
+	const len = o.length;
+	let i = 0;
+
+	// 6. Repeat, while k < len
+	while (i < len) {
+		if (predicate.call(thisArg ?? this, o[i], i, o)) {
+			return i;
+		}
+		// e. Increase k by 1.
+		i++;
+	}
+
+	return -1;
+}
+
+function main(param: g.GameMainParameterObject): void {
      // ここにゲームコードを記述します
      let scene = new g.Scene({
         game: g.game,
@@ -66,7 +83,7 @@
             if (playerId == 2) {
                 targetaco = aco2;
             }
-    
+
             if (gameover) {
                 targetaco.x = 0;
                 targetaco.y = 0;
@@ -101,8 +118,8 @@
             blocks.push  (block)
             console.log(blocks);
             }
-            //防御ブロックの作成 
-                
+            //防御ブロックの作成
+
         });
         aco.start();
         aco2.start();
@@ -156,13 +173,13 @@
             button.modified();
             shot1.modified();
             scene.append(shot1);
-            
+
             scene.onUpdate.add(function () {
                 if(shot1 == null)
                 {
                     return;
                 }
-                
+
                 shot1.modified();
                 //gameoverを透明にする
                 label.opacity = 0;
@@ -170,7 +187,7 @@
                 //acoちゃんにshotが当たると消える
                 var yspritebox = shot1.y + shot1.height;
                 var xspritebox = shot1.x + shot1.width;
-                
+
                 // acoちゃんに球が当たったら消える
                 if (yspritebox >= acoy && yrectbox >= shot1.y && xspritebox >= acox && xrectbox >= shot1.x) {
                     label.opacity = 1;
@@ -180,14 +197,14 @@
                     return true;
 
                 }
-                
+
                     // boxに当たると球とboxが消える
-                    var hit = blocks.findIndex (function(block) {
+                    var hit = arrayFindIndex(blocks, function(block) {
                         var yblock = block.y + block.height;
                         var xblock = block.x + block.width;
 
                         // Player1の場合
-                        if (block.x <= 230　&& shotDirection == 10) 
+                        if (block.x <= 230　&& shotDirection == 10)
                         {
                             return false;
                         }
@@ -199,7 +216,7 @@
                         }
 
                         return (yspritebox >= block.y && yblock >= shot1.y && xspritebox >= block.x && xblock >= shot1.x);
-                        
+
                     });
 
                         if (hit >= 0)
@@ -210,7 +227,7 @@
                             blocks.splice(hit, 1)
                             return true;
                         }
-                
+
                 shot1.x += shotDirection;
                 shot1.modified();
             });
