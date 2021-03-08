@@ -1,3 +1,17 @@
+function arrayFindIndex(o, predicate, thisArg) {
+    // 5. Let k be 0.
+    var len = o.length;
+    var i = 0;
+    // 6. Repeat, while k < len
+    while (i < len) {
+        if (predicate.call(thisArg !== null && thisArg !== void 0 ? thisArg : this, o[i], i, o)) {
+            return i;
+        }
+        // e. Increase k by 1.
+        i++;
+    }
+    return -1;
+}
 function main(param) {
     // ここにゲームコードを記述します
     var scene = new g.Scene({
@@ -44,7 +58,7 @@ function main(param) {
             src: scene.asset.getImageById("button"),
             width: 92,
             height: 60,
-            x: 10,
+            x: 190,
             y: 400,
             frames: [0, 1, 2],
             // タッチイベント
@@ -52,8 +66,11 @@ function main(param) {
         });
         var gameover = false;
         var playerId;
+        var block;
+        var blocks = [];
         //クリックした位置に移動
         scene.onPointDownCapture.add(function (ev) {
+            // console.log("aa",ev);
             playerId = ev.player.id;
             var targetaco; //Playerによって、動くacoちゃんが変わる為の変数
             console.log(playerId);
@@ -68,7 +85,7 @@ function main(param) {
                 targetaco.y = 0;
                 gameover = false;
             }
-            else {
+            else if (playerId == 1 || playerId == 2) {
                 if (ev.target == button) {
                     return;
                     //aco.y = ev.point.y;が実行されなくなる
@@ -76,6 +93,24 @@ function main(param) {
                 // タッチされたときの処理
                 targetaco.y = ev.point.y;
             }
+            var shotblock; //3人目以降の変数
+            //Player3以降の場合
+            if (playerId > 2) {
+                shotblock = ev.point;
+                block = new g.FilledRect({
+                    scene: scene,
+                    x: shotblock.x - 20 / 2,
+                    y: shotblock.y - 20 / 2,
+                    width: 20,
+                    height: 20,
+                    cssColor: "blue"
+                });
+                //クリックした位置にBOXを置く
+                scene.append(block);
+                blocks.push(block);
+                console.log(blocks);
+            }
+            //防御ブロックの作成
         });
         aco.start();
         aco2.start();
@@ -112,6 +147,7 @@ function main(param) {
                 acox = aco.x;
                 acoDestroy = aco;
             }
+            //shotの作成
             var size = 8;
             var shot1 = new g.FilledRect({
                 scene: scene,
@@ -121,23 +157,49 @@ function main(param) {
                 height: size - 6,
                 cssColor: "#000000"
             });
+            //ボタンの変更
             button.frameNumber = 2;
             button.modified();
             shot1.modified();
             scene.append(shot1);
             scene.onUpdate.add(function () {
+                if (shot1 == null) {
+                    return;
+                }
                 shot1.modified();
+                //gameoverを透明にする
                 label.opacity = 0;
                 //acoちゃんにshotが当たると消える
                 var yspritebox = shot1.y + shot1.height;
                 var xspritebox = shot1.x + shot1.width;
+                // acoちゃんに球が当たったら消える
                 if (yspritebox >= acoy && yrectbox >= shot1.y && xspritebox >= acox && xrectbox >= shot1.x) {
                     label.opacity = 1;
                     acoDestroy.opacity = 0;
                     gameover = true;
+                    shot1.destroy();
+                    return true;
                 }
-                if (aco.x >= 811) {
-                    aco.x = 0;
+                // boxに当たると球とboxが消える
+                var hit = arrayFindIndex(blocks, function (block) {
+                    var yblock = block.y + block.height;
+                    var xblock = block.x + block.width;
+                    // Player1の場合
+                    if (block.x <= 230 && shotDirection == 10) {
+                        return false;
+                    }
+                    // Player2の場合
+                    if (block.x > 230 && shotDirection == -10) {
+                        return false;
+                    }
+                    return (yspritebox >= block.y && yblock >= shot1.y && xspritebox >= block.x && xblock >= shot1.x);
+                });
+                if (hit >= 0) {
+                    console.log("右", hit);
+                    shot1.destroy();
+                    blocks[hit].destroy();
+                    blocks.splice(hit, 1);
+                    return true;
                 }
                 shot1.x += shotDirection;
                 shot1.modified();
