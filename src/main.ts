@@ -81,7 +81,7 @@ function main(param) {
 
             playerId = ev.player.id;
             var targetaco; //Playerによって、動くacoちゃんが変わる為の変数
-            
+            var shotblock; //3人目以降の変数
             //playerIdの中身を探す
             var playerfind = arrayFindIndex(players, function (player) {
                 // 
@@ -121,9 +121,9 @@ function main(param) {
                 targetaco.y = ev.point.y;
             }
             
-            var shotblock; //3人目以降の変数
+            
             //Player3以降の場合
-            if (playerId > 2) {
+            else {
                 shotblock = ev.point;
                 block = new g.FilledRect({
                     scene: scene,
