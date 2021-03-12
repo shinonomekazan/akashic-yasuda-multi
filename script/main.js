@@ -1,4 +1,3 @@
-
 function arrayFindIndex(o, predicate, thisArg) {
     // 5. Let k be 0.
     var len = o.length;
@@ -72,33 +71,27 @@ function main(param) {
         var players = [];
         //クリックした位置に移動
         scene.onPointDownCapture.add(function (ev) {
-            if (ev.target != null)
-            {
+            if (ev.target != null) {
                 return;
             }
-
             playerId = ev.player.id;
             var targetaco; //Playerによって、動くacoちゃんが変わる為の変数
-            
+            var shotblock; //3人目以降の変数
             //playerIdの中身を探す
             var playerfind = arrayFindIndex(players, function (player) {
                 // 
-                if(playerId == player)
-                {
+                if (playerId == player) {
                     return true;
                 }
             });
             // playerIdの中身がなかったら
-            if (playerfind ==-1)　//-1は中身がない
-            {
+            if (playerfind == -1) //-1は中身がない
+             {
                 // players(配列)にplayerIdをpush
                 players.push(playerId);
             }
-
             console.log(playerfind);
-            console.log(　"プレーヤー",　players);
-
-
+            console.log("プレーヤー", players);
             if (ev.player.id === players[0]) {
                 targetaco = aco;
             }
@@ -118,10 +111,8 @@ function main(param) {
                 // タッチされたときの処理
                 targetaco.y = ev.point.y;
             }
-            
-            var shotblock; //3人目以降の変数
             //Player3以降の場合
-            if (playerId > 2) {
+            else {
                 shotblock = ev.point;
                 block = new g.FilledRect({
                     scene: scene,
@@ -153,9 +144,6 @@ function main(param) {
             var acoy; //acoちゃんのyサイズ、どこに当たるか
             var acox; //acoちゃんのxサイズ、どこに当たるか
             var acoDestroy; //球が当たって消えるacoちゃん
-            
-
-
             //PlayerIDが１の場合
             if (ev.player.id === players[0]) {
                 shotPlace = aco;
@@ -176,11 +164,9 @@ function main(param) {
                 acox = aco.x;
                 acoDestroy = aco;
             }
-
-            else{
+            else {
                 return;
             }
-
             //shotの作成
             var size = 8;
             var shot1 = new g.FilledRect({
