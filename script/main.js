@@ -1,3 +1,4 @@
+
 function arrayFindIndex(o, predicate, thisArg) {
     // 5. Let k be 0.
     var len = o.length;
@@ -68,16 +69,40 @@ function main(param) {
         var playerId;
         var block;
         var blocks = [];
+        var players = [];
         //クリックした位置に移動
         scene.onPointDownCapture.add(function (ev) {
-            // console.log("aa",ev);
+            if (ev.target != null)
+            {
+                return;
+            }
+
             playerId = ev.player.id;
             var targetaco; //Playerによって、動くacoちゃんが変わる為の変数
-            console.log(playerId);
-            if (playerId == 1) {
+            
+            //playerIdの中身を探す
+            var playerfind = arrayFindIndex(players, function (player) {
+                // 
+                if(playerId == player)
+                {
+                    return true;
+                }
+            });
+            // playerIdの中身がなかったら
+            if (playerfind ==-1)　//-1は中身がない
+            {
+                // players(配列)にplayerIdをpush
+                players.push(playerId);
+            }
+
+            console.log(playerfind);
+            console.log(　"プレーヤー",　players);
+
+
+            if (ev.player.id === players[0]) {
                 targetaco = aco;
             }
-            if (playerId == 2) {
+            if (ev.player.id === players[1]) {
                 targetaco = aco2;
             }
             if (gameover) {
@@ -85,7 +110,7 @@ function main(param) {
                 targetaco.y = 0;
                 gameover = false;
             }
-            else if (playerId == 1 || playerId == 2) {
+            else if (ev.player.id === players[0] || ev.player.id === players[1]) {
                 if (ev.target == button) {
                     return;
                     //aco.y = ev.point.y;が実行されなくなる
@@ -93,6 +118,7 @@ function main(param) {
                 // タッチされたときの処理
                 targetaco.y = ev.point.y;
             }
+            
             var shotblock; //3人目以降の変数
             //Player3以降の場合
             if (playerId > 2) {
@@ -119,7 +145,7 @@ function main(param) {
         scene.append(button);
         scene.append(label);
         label.opacity = 0;
-        button.onPointDown.add(function () {
+        button.onPointDown.add(function (ev) {
             var shotDirection; //球の向き
             var shotPlace; //球の出る場所
             var yrectbox; //acoちゃんのyサイズ、どこに当たるか
@@ -127,8 +153,11 @@ function main(param) {
             var acoy; //acoちゃんのyサイズ、どこに当たるか
             var acox; //acoちゃんのxサイズ、どこに当たるか
             var acoDestroy; //球が当たって消えるacoちゃん
+            
+
+
             //PlayerIDが１の場合
-            if (playerId == 1) {
+            if (ev.player.id === players[0]) {
                 shotPlace = aco;
                 shotDirection = 10;
                 yrectbox = aco2.y + aco2.height;
@@ -138,7 +167,7 @@ function main(param) {
                 acoDestroy = aco2;
             }
             //PlayerIDが2の場合
-            else if (playerId == 2) {
+            else if (ev.player.id === players[1]) {
                 shotPlace = aco2;
                 shotDirection = -10;
                 yrectbox = aco.y + aco.height;
@@ -147,6 +176,11 @@ function main(param) {
                 acox = aco.x;
                 acoDestroy = aco;
             }
+
+            else{
+                return;
+            }
+
             //shotの作成
             var size = 8;
             var shot1 = new g.FilledRect({
