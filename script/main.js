@@ -1,3 +1,16 @@
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 function arrayFindIndex(o, predicate, thisArg) {
     // 5. Let k be 0.
     var len = o.length;
@@ -12,14 +25,18 @@ function arrayFindIndex(o, predicate, thisArg) {
     }
     return -1;
 }
-function main(param) {
-    // ここにゲームコードを記述します
-    var scene = new g.Scene({
-        game: g.game,
-        assetIds: ["aco", "aco2", "button"],
-    });
-    // シーンが読み込まれた時の処理をここに書く
-    scene.onLoad.addOnce(function () {
+var Scene = /** @class */ (function (_super) {
+    __extends(Scene, _super);
+    function Scene(game) {
+        var _this = _super.call(this, {
+            game: game,
+            assetIds: ["aco", "aco2", "button"],
+        }) || this;
+        _this.onLoad.addOnce(_this.handleLoad, _this);
+        return _this;
+    }
+    Scene.prototype.handleLoad = function () {
+        var scene = this;
         // acoちゃんを作る
         var aco = new g.FrameSprite({
             scene: scene,
@@ -79,7 +96,7 @@ function main(param) {
             var shotblock; //3人目以降の変数
             //playerIdの中身を探す
             var playerfind = arrayFindIndex(players, function (player) {
-                // 
+                //
                 if (playerId == player) {
                     return true;
                 }
@@ -198,6 +215,10 @@ function main(param) {
                     acoDestroy.opacity = 0;
                     gameover = true;
                     shot1.destroy();
+                    //画面がクリックされたらリスタート
+                    scene.onPointUpCapture.add(function () {
+                        g.game.replaceScene(new Scene(g.game));
+                    });
                     return true;
                 }
                 // boxに当たると球とboxが消える
@@ -229,7 +250,12 @@ function main(param) {
             button.frameNumber = 0;
             button.modified();
         });
-    });
+    };
+    return Scene;
+}(g.Scene));
+function main(param) {
+    // ここにゲームコードを記述します
+    var scene = new Scene(g.game);
     g.game.pushScene(scene);
 }
 module.exports = main;
