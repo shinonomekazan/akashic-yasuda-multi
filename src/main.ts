@@ -129,7 +129,7 @@ class Scene extends g.Scene {
                 //クリックした位置にBOXを置く
                 scene.append(block);
                 blocks.push(block);
-                console.log(blocks);
+                //console.log(blocks);
             }
             //防御ブロックの作成
         });
@@ -198,16 +198,21 @@ class Scene extends g.Scene {
                 var xspritebox = shot1.x + shot1.width;
                 // acoちゃんに球が当たったら消える
                 if (yspritebox >= acoy && yrectbox >= shot1.y && xspritebox >= acox && xrectbox >= shot1.x) {
-                    label.opacity = 1;
-                    acoDestroy.opacity = 0;
+     
                     gameover = true;
-                    shot1.destroy();
-                    //画面がクリックされたらリスタート
-                    scene.onPointUpCapture.add(function(){
-                        g.game.replaceScene(new Scene(g.game));
+                    scene.onPointDownCapture.addOnce(function(ev){
+                        g.game.replaceScene(new Scene(g.game));                   
                     });
-                    return true;
+                                  
                 }
+                if (gameover) 
+                {
+                    acoDestroy.opacity = 0;
+                    label.opacity = 1;
+                    shot1.destroy();
+                    return true
+                } 
+                
                 // boxに当たると球とboxが消える
                 var hit = arrayFindIndex(blocks, function (block) {
                     var yblock = block.y + block.height;
@@ -223,7 +228,6 @@ class Scene extends g.Scene {
                     return (yspritebox >= block.y && yblock >= shot1.y && xspritebox >= block.x && xblock >= shot1.x);
                 });
                 if (hit >= 0) {
-                    console.log("右", hit);
                     shot1.destroy();
                     blocks[hit].destroy();
                     blocks.splice(hit, 1);
