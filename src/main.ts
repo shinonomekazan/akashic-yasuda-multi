@@ -16,7 +16,7 @@ class Scene extends g.Scene {
     constructor(game: g.Game) {
         super({
             game,
-            assetIds: ["aco", "aco2", "button"],
+            assetIds: ["aco", "aco2", "button", "back"],
         });
         this.onLoad.addOnce(this.handleLoad, this);
     }
@@ -52,7 +52,7 @@ class Scene extends g.Scene {
             text: "gameover",
             fontSize: 50,
             textColor: "blue",
-            x: 100,
+            x: 125,
             y: 100
         });
         var button = new g.FrameSprite({
@@ -63,6 +63,16 @@ class Scene extends g.Scene {
             x: 190,
             y: 400,
             frames: [0, 1, 2],
+            // タッチイベント
+            touchable: true
+        });
+        var back = new g.FrameSprite({
+            scene: scene,
+            src: scene.asset.getImageById("back"),
+            width: 128,
+            height: 48,
+            x: 170,
+            y: 200,
             // タッチイベント
             touchable: true
         });
@@ -193,12 +203,13 @@ class Scene extends g.Scene {
                 // acoちゃんに球が当たったら消える
                 if (yspritebox >= acoy && yrectbox >= shot1.y && xspritebox >= acox && xrectbox >= shot1.x) {
                     gameover = true;
-                    scene.onPointDownCapture.addOnce(function(ev){
+                    back.onPointUp.addOnce(function(ev){
                         g.game.replaceScene(new Scene(g.game));                   
                     });
                 }
                 if (gameover) 
                 {
+                    scene.append(back);
                     acoDestroy.hide()
                     label.show()
                     shot1.destroy();
