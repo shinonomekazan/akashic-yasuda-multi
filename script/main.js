@@ -30,7 +30,7 @@ var Scene = /** @class */ (function (_super) {
     function Scene(game) {
         var _this = _super.call(this, {
             game: game,
-            assetIds: ["aco", "aco2", "button"],
+            assetIds: ["aco", "aco2", "button", "back"],
         }) || this;
         _this.onLoad.addOnce(_this.handleLoad, _this);
         return _this;
@@ -67,7 +67,7 @@ var Scene = /** @class */ (function (_super) {
             text: "gameover",
             fontSize: 50,
             textColor: "blue",
-            x: 100,
+            x: 125,
             y: 100
         });
         var button = new g.FrameSprite({
@@ -78,6 +78,16 @@ var Scene = /** @class */ (function (_super) {
             x: 190,
             y: 400,
             frames: [0, 1, 2],
+            // タッチイベント
+            touchable: true
+        });
+        var back = new g.FrameSprite({
+            scene: scene,
+            src: scene.asset.getImageById("back"),
+            width: 128,
+            height: 48,
+            x: 170,
+            y: 200,
             // タッチイベント
             touchable: true
         });
@@ -96,7 +106,6 @@ var Scene = /** @class */ (function (_super) {
             var shotblock; //3人目以降の変数
             //playerIdの中身を探す
             var playerfind = arrayFindIndex(players, function (player) {
-                //
                 if (playerId == player) {
                     return true;
                 }
@@ -142,9 +151,7 @@ var Scene = /** @class */ (function (_super) {
                 //クリックした位置にBOXを置く
                 scene.append(block);
                 blocks.push(block);
-                console.log(blocks);
             }
-            //防御ブロックの作成
         });
         aco.start();
         aco2.start();
@@ -152,7 +159,7 @@ var Scene = /** @class */ (function (_super) {
         scene.append(aco2);
         scene.append(button);
         scene.append(label);
-        label.opacity = 0;
+        label.hide();
         button.onPointDown.add(function (ev) {
             var shotDirection; //球の向き
             var shotPlace; //球の出る場所
@@ -200,25 +207,24 @@ var Scene = /** @class */ (function (_super) {
             shot1.modified();
             scene.append(shot1);
             scene.onUpdate.add(function () {
-                if (shot1 == null) {
-                    return;
-                }
                 shot1.modified();
                 //gameoverを透明にする
-                label.opacity = 0;
+                label.hide();
                 //acoちゃんにshotが当たると消える
                 var yspritebox = shot1.y + shot1.height;
                 var xspritebox = shot1.x + shot1.width;
                 // acoちゃんに球が当たったら消える
                 if (yspritebox >= acoy && yrectbox >= shot1.y && xspritebox >= acox && xrectbox >= shot1.x) {
-                    label.opacity = 1;
-                    acoDestroy.opacity = 0;
                     gameover = true;
-                    shot1.destroy();
-                    //画面がクリックされたらリスタート
-                    scene.onPointUpCapture.add(function () {
+                    back.onPointUp.addOnce(function (ev) {
                         g.game.replaceScene(new Scene(g.game));
                     });
+                }
+                if (gameover) {
+                    scene.append(back);
+                    acoDestroy.hide();
+                    label.show();
+                    shot1.destroy();
                     return true;
                 }
                 // boxに当たると球とboxが消える
@@ -236,7 +242,6 @@ var Scene = /** @class */ (function (_super) {
                     return (yspritebox >= block.y && yblock >= shot1.y && xspritebox >= block.x && xblock >= shot1.x);
                 });
                 if (hit >= 0) {
-                    console.log("右", hit);
                     shot1.destroy();
                     blocks[hit].destroy();
                     blocks.splice(hit, 1);

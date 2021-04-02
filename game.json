@@ -26,6 +26,12 @@
 			"width": 276,
 			"height": 60,
 			"path": "image/button.png"
+		},
+		"back": {
+			"type": "image",
+			"width": 128,
+			"height": 48,
+			"path": "image/back.png"
 		}
 	},
 	"moduleMainScripts": {
